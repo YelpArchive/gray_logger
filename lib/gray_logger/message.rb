@@ -33,7 +33,7 @@ module GrayLogger
     end
 
     def normalize_key(key)
-      if key.to_s.starts_with?('_')
+      if key.to_s[0] == '_'
         key
       else
         RESERVED_KEYS.include?(key.to_s) ? key : "_#{key}"
