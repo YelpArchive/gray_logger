@@ -1,6 +1,7 @@
 module GrayLogger
 
   class MessageStore
+    attr_reader :store
 
     def initialize(store={})
       @store = store
@@ -21,14 +22,14 @@ module GrayLogger
 
     protected
     def method_missing(method_name, args, &block)
-      if method_name.to_s.ends_with?("=")
+      if method_name.to_s.end_with?("=")
 
         # def method_name=(value)
         #   @store[:method_name] = value
         # end
-        class_eval <<-EOMEVAL
+        instance_eval <<-EOMEVAL
           def #{method_name}(value)
-            @store[:#{method_name.to_s[0..-2]}] = value
+            @store[:#{method_name.to_s.chop}] = value
           end
         EOMEVAL
 

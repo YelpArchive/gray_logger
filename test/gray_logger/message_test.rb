@@ -18,5 +18,4 @@ class MessageTest < Test::Unit::TestCase
     assert message.to_hash[:_level].nil?, "_level is set: #{message.to_hash.inspect}"
   end
 
-
 end
