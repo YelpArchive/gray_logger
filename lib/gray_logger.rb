@@ -8,6 +8,7 @@ require 'gray_logger/middleware'
 require 'gray_logger/helper_methods'
 
 
-if defined?(Rails) && Rails.version.to_i >= 3
-  require 'gray_logger/railtie'
+if defined?(Rails)
+  require 'gray_logger/rails_modules'
+  require 'gray_logger/railtie' if defined?(Rails::Railtie)
 end
