@@ -1,6 +1,8 @@
 module GrayLogger
 
   class Middleware
+    include GrayLogger::Support
+
     attr_accessor :gray_logger
 
     def initialize(app, options={})
@@ -30,15 +32,6 @@ module GrayLogger
         gray_logger.notify!(message_store.to_message) unless gray_logger.nil?
       end
 
-    end
-
-    private
-    def symbolize_keys(hash)
-      return {} if hash.nil?
-      hash.inject({}) do |hash, key_value|
-        hash[key_value[0].to_sym] = key_value[1]
-        hash
-      end
     end
 
   end

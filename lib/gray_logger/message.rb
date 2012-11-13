@@ -1,6 +1,8 @@
 module GrayLogger
 
   class Message
+    include GrayLogger::Support
+
     RESERVED_KEYS = %( short_message full_message version host timestamp level facility line file )
 
     attr_reader :message_hash, :message
@@ -13,7 +15,7 @@ module GrayLogger
     def to_hash
       prepare_hash
       ensure_necessary_keys_are_present
-      @message
+      symbolize_keys(@message)
     end
 
     private

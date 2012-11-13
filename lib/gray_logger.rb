@@ -1,6 +1,7 @@
 require 'singleton'
 require 'gelf'
 
+require 'gray_logger/support'
 require 'gray_logger/message'
 require 'gray_logger/message_store'
 require 'gray_logger/middleware'
