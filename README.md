@@ -13,22 +13,26 @@ GrayLogger is a small logging tool that allows you to simply log anything you wa
 	gem "gray_logger"
 	```
 
-2. run the generator
-	```shell
-	rails g gray_logger:install
-	```
-	or if you are using Rails 2.3.x
-	```shell
-	script/generate gray_logger:install
-    ```
-
-3. configure GrayLogger in config/gray_logger.yml
+2. configure GrayLogger in config/gray_logger.yml
    ```yaml
    development:
      host: 127.0.0.1
      port:  12201
      facility: "myapp"
    ```
+
+3. if you are using Rails 2.3 please add the following code to an initializer:
+  ```ruby
+  require 'gray_logger'
+  begin
+    gray_logger_config = YAML.load(File.read(Rails.root.join("config/gray_logger.yml")))[Rails.env]
+    Rails.configuration.middleware.insert_after Rack::Lock, "GrayLogger::Middleware", :configuration => gray_logger_config
+  rescue => e
+    $stderr.puts("GrayLogger not configured. Please add config/gray_logger.yml")
+  end
+
+  ActionController::Base.send(:include, ::GrayLogger::HelperMethods)
+  ````
 
 ## Usage
 
