@@ -36,7 +36,7 @@ GrayLogger is a small logging tool that allows you to simply log anything you wa
 
 4. To install the gray_logger proxy:
   ````ruby
-  config.logger = Rack::GrayLogger::Proxy.new(Syslogger.new("path..."))
+  config.logger = Rack::GrayLogger::Proxy.new(:proxied_logger => Syslogger.new("path..."))
   ````
 
 ## Usage
