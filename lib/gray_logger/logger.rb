@@ -4,19 +4,11 @@ module GrayLogger
     include ::GrayLogger::Support
     attr_reader :buckets, :automatic_logging
 
-    def initialize(configuration={})
-      automatic_logging = configuration.delete(:automatic_logging)
+    def initialize(configuration)
+      automatic_logging = configuration.automatic_logging
       @automatic_logging = automatic_logging.nil? ? true : automatic_logging
 
-      defaults = {
-        :size => "WAN",
-        :facility => "facility-not-defined"
-      }
-
-      config = symbolize_keys(configuration)
-      config = defaults.merge(config)
-
-      super(config.delete(:host), config.delete(:port), config.delete(:size), config)
+      super(configuration.host, configuration.port, configuration.size, configuration.options)
 
       @buckets = {}
     end
