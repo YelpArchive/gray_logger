@@ -5,7 +5,7 @@ module GrayLogger
     begin
       initializer "gray_logger.configure_rails_initialization" do |app|
         configuration = YAML.load(File.read(Rails.root.join('config/gray_logger.yml')))[Rails.env]
-        app.middleware.insert_after "ActionDispatch::ShowExceptions", "GrayLogger::Middleware", :configuration => configuration
+        app.middleware.insert_after "ActionDispatch::ShowExceptions", "Rack::GrayLogger::Middleware", :configuration => configuration
       end
     rescue => e
       $stderr.puts("GrayLogger not configured. Please add config/gray_logger.yml")

@@ -2,11 +2,11 @@ require 'singleton'
 require 'gelf'
 
 require 'gray_logger/support'
+require 'gray_logger/bucket'
 require 'gray_logger/message'
-require 'gray_logger/message_store'
-require 'gray_logger/middleware'
+require 'gray_logger/logger'
+require 'gray_logger/rack'
 require 'gray_logger/helper_methods'
-
 
 if defined?(Rails)
   require 'gray_logger/rails_modules'

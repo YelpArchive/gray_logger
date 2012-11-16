@@ -13,8 +13,7 @@ module GrayLogger
       # Overrides the rescue_action method in ActionController::Base, but does not inhibit
       # any custom processing that is defined with Rails 2's exception helpers.
       def rescue_action_with_gray_logger(exception)
-        gray_logger.exception_backtrace = exception.backtrace.join("\n")
-        gray_logger.short_message = "Error: #{exception.inspect}"
+        gray_logger.handle_exception(exception)
         rescue_action_without_gray_logger(exception)
       end
     end

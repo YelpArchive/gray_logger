@@ -1,5 +1,4 @@
 module GrayLogger
-
   class Message
     include GrayLogger::Support
 
