@@ -1,4 +1,3 @@
-require 'singleton'
 require 'gelf'
 
 require 'gray_logger/support'

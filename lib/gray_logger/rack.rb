@@ -11,7 +11,7 @@ module Rack
         configuration = symbolize_keys(options.delete(:configuration))
         self.gray_logger = ::GrayLogger::Logger.new(configuration)
 
-        ::Rack::GrayLogger.proxy.gray_logger = gray_logger if ::Rack::GrayLogger.proxy
+        ::Rack::GrayLogger.proxy.gray_logger = gray_logger
       end
 
       def call(env)
@@ -66,6 +66,7 @@ module Rack
           end
         EOT
       end
+
       private
       def method_missing(method_name, *args, &block)
         unless gray_logger.nil?
@@ -83,13 +84,6 @@ module Rack
           end
         end
       end
-
-    end
-
-    # config.logger = Rack::GrayLogger.after_request_proxy(SysLogger.new)
-    def self.after_request_proxy(proxied_logger)
-      self.proxy = Rack::GrayLogger::Proxy.new(:proxied_logger => proxied_logger)
-      proxy
     end
 
     def self.proxy= proxy
@@ -97,7 +91,7 @@ module Rack
     end
 
     def self.proxy
-      @proxy
+      @proxy ||= ::Rack::GrayLogger::Proxy.new
     end
 
   end

@@ -47,6 +47,7 @@ module GrayLogger
       @buckets.keys.each do |bucket_name|
         flush_bucket(bucket_name)
       end
+      reset!
     end
 
     # flush a specific bucket
