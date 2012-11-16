@@ -19,14 +19,18 @@ module Rack
         begin
           status, headers, body = @app.call(env)
         rescue => e
-          gray_logger.log_exception(e)
+          gray_logger.log_exception(e) if gray_logger.automatic_logging?
           raise
         ensure
           req = Rack::Request.new(env)
-          gray_logger.log_exception(env['rack.exception'])
-          gray_logger.after_request_log.status_code = status.to_i
-          gray_logger.after_request_log.short_message = "Request: #{req.path} (#{status.to_i})" if gray_logger.after_request_log[:short_message].nil?
-          gray_logger.flush
+          if gray_logger.automatic_logging?
+            gray_logger.log_exception(env['rack.exception'])
+            gray_logger.after_request_log.status_code = status.to_i
+            gray_logger.after_request_log.short_message = "Request: #{req.path} (#{status.to_i})" if gray_logger.after_request_log[:short_message].nil?
+            gray_logger.flush
+          else
+            gray_logger.reset!
+          end
           [status, headers, body]
         end
 

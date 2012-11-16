@@ -2,9 +2,12 @@ module GrayLogger
 
   class Logger < GELF::Logger
     include ::GrayLogger::Support
-    attr_reader :buckets
+    attr_reader :buckets, :automatic_logging
 
     def initialize(configuration={})
+      automatic_logging = configuration.delete(:automatic_logging)
+      @automatic_logging = automatic_logging.nil? ? true : automatic_logging
+
       defaults = {
         :size => "WAN",
         :facility => "facility-not-defined"
@@ -16,6 +19,15 @@ module GrayLogger
       super(config.delete(:host), config.delete(:port), config.delete(:size), config)
 
       @buckets = {}
+    end
+
+    def automatic_logging?
+      !!@automatic_logging
+    end
+
+    def reset!
+      @buckets = {}
+      self
     end
 
     # logger.after_request_log << {:my_field => 'field content'}

@@ -43,11 +43,36 @@ GrayLogger is a small logging tool that allows you to simply log anything you wa
 
 In Rails you can use the "gray_logger" method to add new fields to be logged to Graylog2.
 
-e.g.
-```ruby
-gray_logger.login_name = "darkswoop"
-```
+#### Buckets
+You can use buckets to collect fields and send them in one request to GrayLog2:
 
-After the request is finished and shortly before the response is send to the user GrayLogger will send your Log-Message to the Graylog2 server.
+````ruby
+gray_logger.bucket(:financial_data).account_nr = 123
+gray_logger.bucket(:financial_data).iban = 98767
+gray_logger.flush_bucket(:financial_data) # sends the collected fields as one log message to GrayLog2 and clears the bucket
+````
+When the request is finished all remaining buckets are send to GrayLog2 so you don't have to care if you only want to collect your data.
 
+#### After Request Log
+
+There is a special bucket that is used for logging possible exceptions and request information.
+When you are using the Rack::GrayLogger::Proxy the proxy will use this bucket to collect the loglines
+from the proxied logger. Feel free to add your own fields using:
+
+````ruby
+gray_logger.after_request_log.user_login = current_user.login
+````
+
+#### Automatic Logging
+
+Automatic Logging is enabled by default. That means after the request is done GrayLogger will automatically
+log to GrayLog2. If you don't want this automatic logging disable it by setting automatic_logging to false.
+
+````yaml
+development:
+  host: ...
+  port:  ...
+  facility: ...
+  automatic_logging: false
+````
 
