@@ -34,6 +34,11 @@ GrayLogger is a small logging tool that allows you to simply log anything you wa
   ActionController::Base.send(:include, ::GrayLogger::HelperMethods)
   ````
 
+4. To install the gray_logger proxy:
+  ````ruby
+  config.logger = Rack::GrayLogger::Proxy.new(Syslogger.new("path..."))
+  ````
+
 ## Usage
 
 In Rails you can use the "gray_logger" method to add new fields to be logged to Graylog2.
