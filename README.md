@@ -26,7 +26,7 @@ GrayLogger is a small logging tool that allows you to simply log anything you wa
   require 'gray_logger'
   begin
     gray_logger_config = YAML.load(File.read(Rails.root.join("config/gray_logger.yml")))[Rails.env]
-    Rails.configuration.middleware.insert_after Rack::Lock, "GrayLogger::Middleware", :configuration => gray_logger_config
+    Rails.configuration.middleware.insert_after Rack::Lock, "Rack::GrayLogger::Middleware", :configuration => gray_logger_config
   rescue => e
     $stderr.puts("GrayLogger not configured. Please add config/gray_logger.yml")
   end
