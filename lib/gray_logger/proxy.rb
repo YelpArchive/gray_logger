@@ -30,7 +30,6 @@ module GrayLogger
             gray_logger.send(:#{const.downcase}, *args)
           else
             if !gray_logger.nil? && gray_logger.#{const.downcase}?
-              puts "level: #{const.downcase}"
               gray_logger.after_request_log.append_to(:log_file, "[#{const.downcase}] \#{args[0]}")
             end
             proxied_logger.send(:#{const.downcase}, *args)
