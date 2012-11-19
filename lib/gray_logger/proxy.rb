@@ -9,7 +9,7 @@ module GrayLogger
 
     # def debug(*args)
     #   if proxied_logger.nil?
-    #     super(*args)
+    #     gray_logger.send(:debug, *args)
     #   else
     #     after_request_log.append_to(:log_file, "[debug] #{args[0]}") unless gray_logger.nil?
     #     proxied_logger.send(:debug, *args)
@@ -29,14 +29,8 @@ module GrayLogger
     end
 
     private
+    # delegate every method the proxy doesn't know to gray_logger and proxied_logger. let them handle this.
     def method_missing(method_name, *args, &block)
-      unless gray_logger.nil?
-        begin
-          gray_logger.send(method_name, *args, &block)
-        rescue => e
-          gray_logger.handle_exception(e)
-        end
-      end
       unless proxied_logger.nil?
         begin
           proxied_logger.send(method_name, *args, &block)

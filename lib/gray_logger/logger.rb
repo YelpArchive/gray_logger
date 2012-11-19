@@ -2,24 +2,22 @@ module GrayLogger
 
   class Logger < GELF::Logger
     include ::GrayLogger::Support
-    attr_reader :buckets, :automatic_logging
+    attr_reader :buckets, :configuration
 
     def initialize(configuration)
-      automatic_logging = configuration.automatic_logging
-      @automatic_logging = automatic_logging.nil? ? true : automatic_logging
-
       super(configuration.host, configuration.port, configuration.size, configuration.options)
+      @configuration = configuration
 
       @buckets = {}
-    end
-
-    def automatic_logging?
-      !!@automatic_logging
     end
 
     def reset!
       @buckets = {}
       self
+    end
+
+    def automatic_logging?
+      configuration.automatic_logging?
     end
 
     # logger.after_request_log << {:my_field => 'field content'}

@@ -3,7 +3,7 @@ module GrayLogger
     
     protected
     def gray_logger_proxy
-      if Rails.version >= 3
+      if Rails.version.to_i >= 3
         env["rack.gray_logger.proxy"]
       else
         request.env["rack.gray_logger.proxy"]

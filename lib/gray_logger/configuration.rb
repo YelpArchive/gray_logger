@@ -18,5 +18,9 @@ module GrayLogger
       self.options = config
     end
 
+    def automatic_logging?
+      @automatic_logging.nil? ? true : !!@automatic_logging
+    end
+
   end
 end
