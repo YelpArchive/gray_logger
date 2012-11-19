@@ -8,13 +8,13 @@ module Rack
 
       def initialize(app)
         @app = app
-        ::GrayLogger.proxy.gray_logger = ::GrayLogger::Logger.new(::GrayLogger.configuration.dup)
       end
 
       def call(env)
         env["rack.gray_logger.proxy"] = ::GrayLogger.proxy
         gray_logger = ::GrayLogger.proxy.gray_logger
         begin
+          gray_logger.reset!
           status, headers, body = @app.call(env)
         rescue => e
           gray_logger.log_exception(e) if gray_logger.automatic_logging?

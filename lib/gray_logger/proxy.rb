@@ -1,17 +1,25 @@
 module GrayLogger
   class Proxy
-    attr_accessor :proxied_logger, :gray_logger
+    attr_accessor :proxied_logger
 
     def initialize(attributes={})
       self.proxied_logger = attributes[:proxied_logger]
-      self.gray_logger = attributes[:gray_logger]
+      @gray_logger = attributes[:gray_logger]
+    end
+
+    def gray_logger
+      if ::GrayLogger.configuration
+        @gray_logger ||= ::GrayLogger::Logger.new(::GrayLogger.configuration.dup)
+      end
     end
 
     # def debug(*args)
     #   if proxied_logger.nil?
     #     gray_logger.send(:debug, *args)
     #   else
-    #     after_request_log.append_to(:log_file, "[debug] #{args[0]}") unless gray_logger.nil?
+    #     if !gray_logger.nil? && gray_logger.debug?
+    #       gray_logger.after_request_log.append_to(:log_file, "[debug] #{args[0]}")
+    #     end
     #     proxied_logger.send(:debug, *args)
     #   end
     # end
@@ -21,7 +29,10 @@ module GrayLogger
           if proxied_logger.nil?
             gray_logger.send(:#{const.downcase}, *args)
           else
-            gray_logger.after_request_log.append_to(:log_file, "[#{const.downcase}] \#{args[0]}") unless gray_logger.nil?
+            if !gray_logger.nil? && gray_logger.#{const.downcase}?
+              puts "level: #{const.downcase}"
+              gray_logger.after_request_log.append_to(:log_file, "[#{const.downcase}] \#{args[0]}")
+            end
             proxied_logger.send(:#{const.downcase}, *args)
           end
         end

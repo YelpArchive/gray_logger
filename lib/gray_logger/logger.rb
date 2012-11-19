@@ -2,6 +2,13 @@ module GrayLogger
 
   class Logger < GELF::Logger
     include ::GrayLogger::Support
+
+    @last_chunk_id = 0
+
+    # class << self
+    #   attr_reader :last_chunk_id
+    # end
+
     attr_reader :buckets, :configuration
 
     def initialize(configuration)

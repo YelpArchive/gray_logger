@@ -2,7 +2,7 @@ module GrayLogger
   class Configuration
     include ::GrayLogger::Support
 
-    attr_accessor :host, :port, :size, :automatic_logging, :options
+    attr_accessor :host, :port, :size, :automatic_logging, :logger_level, :options
     def initialize(configuration_hash)
       defaults = {
         :size => "WAN",
@@ -12,7 +12,7 @@ module GrayLogger
       config = symbolize_keys(configuration_hash)
       config = defaults.merge(config)
 
-      [:host, :port, :size, :automatic_logging].each do |method|
+      [:host, :port, :size, :automatic_logging, :logger_level].each do |method|
         send("#{method}=", config.delete(method))
       end
       self.options = config
