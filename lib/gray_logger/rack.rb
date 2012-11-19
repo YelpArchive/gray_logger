@@ -11,7 +11,6 @@ module Rack
       end
 
       def call(env)
-        env["rack.gray_logger.proxy"] = ::GrayLogger.proxy
         gray_logger = ::GrayLogger.proxy.gray_logger
         begin
           gray_logger.reset!

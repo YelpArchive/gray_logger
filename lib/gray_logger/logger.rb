@@ -8,8 +8,12 @@ module GrayLogger
     attr_reader :buckets, :configuration
 
     def initialize(configuration)
-      super(configuration.host, configuration.port, configuration.size, configuration.options)
-      @configuration = configuration
+      if configuration.valid?
+        super(configuration.host, configuration.port, configuration.size, configuration.options)
+        @configuration = configuration
+      else
+        self.disable # from GELF
+      end
 
       @buckets = {}
     end

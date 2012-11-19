@@ -4,18 +4,28 @@ module GrayLogger
 
     attr_accessor :host, :port, :size, :automatic_logging, :logger_level, :options
     def initialize(configuration_hash)
-      defaults = {
-        :size => "WAN",
-        :facility => "facility-not-defined"
-      }
+      unless configuration_hash.nil?
+        configuration = configuration_hash.dup
+        defaults = {
+          :size => "WAN",
+          :facility => "facility-not-defined"
+        }
 
-      config = symbolize_keys(configuration_hash)
-      config = defaults.merge(config)
+        config = symbolize_keys(configuration)
+        config = defaults.merge(config)
 
-      [:host, :port, :size, :automatic_logging, :logger_level].each do |method|
-        send("#{method}=", config.delete(method))
+        [:host, :port, :size, :automatic_logging, :logger_level].each do |method|
+          send("#{method}=", config.delete(method))
+        end
+        self.options = config
       end
-      self.options = config
+    end
+
+    def valid?
+      invalid_host = self.host.nil?
+      invalid_port = self.port.nil?
+      invalid_size = self.size.nil?
+      !(invalid_host || invalid_port || invalid_size)
     end
 
     def automatic_logging?

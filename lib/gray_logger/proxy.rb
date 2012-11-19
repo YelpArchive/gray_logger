@@ -8,9 +8,7 @@ module GrayLogger
     end
 
     def gray_logger
-      if ::GrayLogger.configuration
-        @gray_logger ||= ::GrayLogger::Logger.new(::GrayLogger.configuration.dup)
-      end
+      @gray_logger ||= ::GrayLogger::Logger.new(::GrayLogger.configuration)
     end
 
     # def debug(*args)
