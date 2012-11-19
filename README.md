@@ -19,6 +19,8 @@ GrayLogger is a small logging tool that allows you to simply log anything you wa
      host: 127.0.0.1
      port:  12201
      facility: "myapp"
+     automatic_logging: true        # flushes all collected fields to graylog after request
+     level: 1                       # GELF::INFO
    ```
 
 3. if you are using Rails 2.3 please add the following code to an initializer:
@@ -26,6 +28,7 @@ GrayLogger is a small logging tool that allows you to simply log anything you wa
   require 'gray_logger'
   begin
     gray_logger_config = YAML.load(File.read(Rails.root.join("config/gray_logger.yml")))[Rails.env]
+    ::GrayLogger.configure(gray_logger_config)
     Rails.configuration.middleware.insert_after Rack::Lock, "Rack::GrayLogger::Middleware", :configuration => gray_logger_config
   rescue => e
     $stderr.puts("GrayLogger not configured. Please add config/gray_logger.yml")
@@ -36,8 +39,8 @@ GrayLogger is a small logging tool that allows you to simply log anything you wa
 
 4. To install the gray_logger proxy:
   ````ruby
-  Rack::GrayLogger.proxy.proxied_logger = Syslogger.new("path...")
-  config.logger = Rack::GrayLogger.proxy
+  ::GrayLogger.proxy.proxied_logger = Syslogger.new("path...")
+  config.logger = ::GrayLogger.proxy
   ````
 
 ## Usage
