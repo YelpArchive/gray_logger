@@ -69,12 +69,4 @@ class LoggerTest < MiniTest::Unit::TestCase
     assert_equal "line 1\nline 2", logger.after_request_log[:exception_backtrace], "the exception backtrace is set to: #{logger.after_request_log[:exception_backtrace]} :("
   end
 
-
-  private
-  def build_logger(with_stub=true, logger_configuration={})
-    configuration = GrayLogger::Configuration.new(logger_configuration)
-    configuration.stubs(:valid?).returns(true) if with_stub
-    GrayLogger::Logger.new(configuration)
-  end
-
 end

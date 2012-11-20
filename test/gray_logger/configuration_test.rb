@@ -2,7 +2,7 @@ require 'test_helper'
 class ConfigurationTest < MiniTest::Unit::TestCase
 
   def test_initializing_a_new_configuration_instance_configures_itself
-    configuration = GrayLogger::Configuration.new({:host => '127.0.0.1', :port => '11211'})
+    configuration = GrayLogger::Configuration.new(logger_configuration_attributes)
     assert_equal "127.0.0.1", configuration.host, "host is not set."
     assert_equal "11211", configuration.port, "port is not set."
     assert_equal "WAN", configuration.size, "default size is not set."
