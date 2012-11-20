@@ -1,5 +1,5 @@
 require 'test_helper'
-class SupportTest < Test::Unit::TestCase
+class SupportTest < MiniTest::Unit::TestCase
 
   class SupportedClass
     include GrayLogger::Support

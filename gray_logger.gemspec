@@ -10,4 +10,10 @@ Gem::Specification.new do |s|
   s.files         = Dir.glob("lib/**/*") + %w(CHANGELOG.md README.md Rakefile)
 
   s.add_dependency("gelf")
+
+  s.add_development_dependency "minitest"
+  s.add_development_dependency "minitest-colorize"
+  s.add_development_dependency "guard-minitest"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "growl"
 end

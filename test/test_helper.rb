@@ -1,2 +1,2 @@
-require 'test/unit'
+require 'minitest-colorize'
 require 'gray_logger'
