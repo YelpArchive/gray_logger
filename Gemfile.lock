@@ -21,10 +21,13 @@ GEM
     json (1.7.5)
     listen (0.5.3)
     lumberjack (1.0.2)
+    metaclass (0.0.1)
     method_source (0.8.1)
     minitest (2.12.1)
     minitest-colorize (0.0.4)
       minitest (~> 2.0)
+    mocha (0.13.0)
+      metaclass (~> 0.0.1)
     pry (0.9.10)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -42,4 +45,5 @@ DEPENDENCIES
   guard-minitest
   minitest
   minitest-colorize
+  mocha
   rake
