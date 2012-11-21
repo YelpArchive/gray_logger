@@ -25,21 +25,28 @@ GrayLogger is a small logging tool that allows you to simply log anything you wa
 
 3. if you are using Rails 2.3 please add the following code to an initializer:
   ```ruby
-  require 'gray_logger'
   begin
     gray_logger_config = YAML.load(File.read(Rails.root.join("config/gray_logger.yml")))[Rails.env]
-    ::GrayLogger.configure(gray_logger_config)
-    Rails.configuration.middleware.insert_after Rack::Lock, "Rack::GrayLogger::Middleware", :configuration => gray_logger_config
-  rescue => e
-    $stderr.puts("GrayLogger not configured. Please add config/gray_logger.yml")
-  end
 
-  ActionController::Base.send(:include, ::GrayLogger::HelperMethods)
+    host = ENV['YOUR_GRAYLOG_HOST']     || gray_logger_config["host"]
+    port = ENV['YOUR_GRAYLOG_PORT']     || gray_logger_config["port"]
+    size = ENV['YOUR_GRAYLOG_MAX_SIZE'] || "WAN"
+
+    ::GrayLogger.configure(gray_logger_config)
+    ::GrayLogger.proxy.initialize_gray_logger!
+
+    ActionController::Base.send(:include, ::GrayLogger::HelperMethods)
+
+    Rails.configuration.middleware.insert_after Rack::Lock, "Rack::GrayLogger::Middleware"
+  rescue => e
+    Rails.logger.warn("GrayLogger not configured.")
+  end
   ````
 
-4. To install the gray_logger proxy:
+4. To install the gray_logger proxy set the logger in your environment file:
   ````ruby
-  ::GrayLogger.proxy.proxied_logger = Syslogger.new("path...")
+  require 'gray_logger'
+  ::GrayLogger.proxy.proxied_logger = Logger.new(Rails.root.join("log", Rails.env + ".log"), 3, 50*1024*1024)
   config.logger = ::GrayLogger.proxy
   ````
 
