@@ -8,7 +8,15 @@ module GrayLogger
     end
 
     def gray_logger
-      @gray_logger ||= ::GrayLogger::Logger.new(::GrayLogger.configuration)
+      @gray_logger
+    end
+
+    def gray_logger?
+      !!@gray_logger
+    end
+
+    def initialize_gray_logger!
+      @gray_logger = ::GrayLogger::Logger.new(::GrayLogger.configuration)
     end
 
     # def debug(*args)
@@ -25,9 +33,9 @@ module GrayLogger
       class_eval <<-EOT, __FILE__, __LINE__ + 1
         def #{const.downcase}(*args)
           if proxied_logger.nil?
-            gray_logger.send(:#{const.downcase}, *args)
+            gray_logger.send(:#{const.downcase}, *args) if gray_logger?
           else
-            if !gray_logger.nil? && gray_logger.#{const.downcase}?
+            if gray_logger? && gray_logger.#{const.downcase}?
               gray_logger.after_request_log.append_to(:log_file, "[#{const.downcase}] \#{args[0]}")
             end
             proxied_logger.send(:#{const.downcase}, *args)

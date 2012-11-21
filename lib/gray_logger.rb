@@ -28,5 +28,9 @@ module GrayLogger
     yield(configuration) if block_given?
   end
 
+  def self.configured?
+    !self.configuration.nil?
+  end
+
 end
 
