@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gray_logger (0.11.5)
+    gray_logger (0.11.6)
       gelf
 
 GEM
