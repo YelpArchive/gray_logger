@@ -15,13 +15,13 @@ module Rack
         begin
           gray_logger.reset!
           status, headers, body = @app.call(env)
-        rescue => e
+        rescue Exception => e
           gray_logger.log_exception(e) if gray_logger.automatic_logging?
-          raise
+          raise e
         ensure
           req = Rack::Request.new(env)
           if ::GrayLogger.configuration.automatic_logging?
-            gray_logger.log_exception(env['rack.exception'])
+            gray_logger.log_exception(env['rack.exception']) if env['rack.exception']
             gray_logger.after_request_log.status_code = status.to_i
             gray_logger.after_request_log.short_message = "Request: #{req.path} (#{status.to_i})" if gray_logger.after_request_log[:short_message].nil?
             gray_logger.flush
