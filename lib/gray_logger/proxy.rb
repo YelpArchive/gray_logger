@@ -53,6 +53,8 @@ module GrayLogger
         rescue => e
           proxied_logger.error(e.backtrace.join("\n"))
         end
+      else
+        super
       end
     end
   end

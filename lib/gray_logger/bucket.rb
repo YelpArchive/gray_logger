@@ -27,6 +27,8 @@ module GrayLogger
         EOMEVAL
 
         send(method_name, args)
+      else
+        super
       end
     end
 
