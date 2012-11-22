@@ -14,6 +14,7 @@ end
 class RackTest < MiniTest::Unit::TestCase
   def setup
     ::GrayLogger.configuration = ::GrayLogger::Configuration.new(logger_configuration_attributes)
+    ::GrayLogger.proxy.initialize_gray_logger!
   end
 
   def test_calling_the_middleware_clears_the_gray_logger_buckets
@@ -63,6 +64,12 @@ class RackTest < MiniTest::Unit::TestCase
     ::GrayLogger.proxy.gray_logger.expects(:reset!).twice # first one before the app.call. the second one is the interesting thing here.
 
     middleware.call(middleware_env)
+  end
+
+  def test_the_middleware_shouldn_t_return_an_empty_body_when_gray_logger_isn_t_defined
+    ::GrayLogger.proxy.stubs(:gray_logger).returns(nil)
+    result = middleware.call(middleware_env)
+    assert_equal ["200 ok", "headers", "body"], result
   end
 
   private
