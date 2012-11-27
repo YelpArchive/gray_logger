@@ -1,3 +1,7 @@
+# to use this you need to call this in a Rails initializer.
+#
+# ActionController::Base.send(:include, GrayLogger::RailsModules::ActionControllerCatcher)
+#
 module GrayLogger
   module RailsModules
     module ActionControllerCatcher
@@ -20,4 +24,5 @@ module GrayLogger
   end  
 end
 
-ActionController::Base.send(:include, GrayLogger::RailsModules::ActionControllerCatcher)
+
+
