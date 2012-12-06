@@ -57,7 +57,7 @@ module GrayLogger
 
     def log_exception(exception)
       if exception
-        after_request_log.short_message = "Error: #{exception.inspect}"
+        after_request_log.short_message = "Error: #{exception}"
         after_request_log.exception_backtrace = exception.backtrace.join("\n")
       end
     end
