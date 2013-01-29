@@ -20,6 +20,8 @@ module GrayLogger
       end
     rescue => e
       $stderr.puts("GrayLogger not configured. Please add config/gray_logger.yml")
+    ensure
+      ActionController::Base.send(:include, ::GrayLogger::HelperMethods)
     end
 
   end
