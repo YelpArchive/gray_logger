@@ -5,12 +5,18 @@ module GrayLogger
     begin
       initializer "gray_logger.configure_rails_initialization" do |app|
         configuration = YAML.load(File.read(Rails.root.join('config/gray_logger.yml')))[Rails.env]
-        ::GrayLogger.configure(configuration)
-        ::GrayLogger.proxy.initialize_gray_logger!
 
-        ActionController::Base.send(:include, ::GrayLogger::HelperMethods)
+        if configuration.try(:key?, "enabled")
+          overrides = {}
+          overrides[:host] = ENV['GRAY_LOGGER_HOST']     if ENV['GRAY_LOGGER_HOST']
+          overrides[:port] = ENV['GRAY_LOGGER_PORT']     if ENV['GRAY_LOGGER_PORT']
+          overrides[:size] = ENV['GRAY_LOGGER_MAX_SIZE'] if ENV['GRAY_LOGGER_MAX_SIZE']
 
-        app.middleware.insert_after "ActionDispatch::ShowExceptions", "Rack::GrayLogger::Middleware"
+          ::GrayLogger.configure(configuration.merge(overrides))
+          ::GrayLogger.proxy.initialize_gray_logger!
+
+          app.middleware.insert_after "ActionDispatch::ShowExceptions", "Rack::GrayLogger::Middleware"
+        end
       end
     rescue => e
       $stderr.puts("GrayLogger not configured. Please add config/gray_logger.yml")
