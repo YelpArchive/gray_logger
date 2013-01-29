@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'gray_logger'
-  s.version       = '0.11.12'
+  s.version       = '0.12.0'
   s.date          = Date.today.strftime("%Y-%m-%d")
   s.summary       = "Rack Middleware to log custom stuff to Graylog2"
   s.description   = "GrayLogger is a middleware for Rack to easily log custom stuff to Graylog2"
