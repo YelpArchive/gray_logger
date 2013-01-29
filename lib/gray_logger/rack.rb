@@ -19,7 +19,14 @@ module Rack
             gray_logger.reset!
             status, headers, body = @app.call(env)
           rescue Exception => e
-            gray_logger.log_exception(e) if gray_logger.automatic_logging?
+
+            # Ensure the original exception can be re-raised
+            begin
+              gray_logger.log_exception(e) if gray_logger.automatic_logging?
+            rescue
+              $stderr.puts "gray_logger threw an error and shouldn't"
+            end
+
             raise e
           ensure
             begin
